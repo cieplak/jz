@@ -12,8 +12,8 @@ if ( $status == 0 ) then
   echo
 else
   echo
-  echo ">> zpool create $JZ_ZFS_ZPOOL ""$JZ_ZFS_DEVICE"
-           zpool create $JZ_ZFS_ZPOOL "$JZ_ZFS_DEVICE"
+  echo ">> zpool create $JZ_ZFS_ZPOOL $JZ_ZFS_DEVICE"
+           zpool create $JZ_ZFS_ZPOOL $JZ_ZFS_DEVICE
   echo
 endif
 

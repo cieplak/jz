@@ -56,7 +56,7 @@ else
            service jail stop $JAILNAME
   echo
   echo
-  echo ".. Successfully created a new jail named $JAILNAME !!!"
+  echo ".. Successfully created a new jail named $JAILNAME"
   echo
   echo ".. Start the jail with the command:"
   echo ".. $ service jail start $JAILNAME"

@@ -11,6 +11,9 @@ if ( $status == 0 ) then
 else
 
   echo
+  echo ">> mkdir ~/.jz"
+           mkdir ~/.jz
+  echo
   echo ">> echo 3 > ~/.jz/index"
            echo 3 > ~/.jz/index
   echo
