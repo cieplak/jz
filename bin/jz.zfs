@@ -1,0 +1,32 @@
+#!/bin/csh
+
+: jz.zfs
+
+echo
+echo '>> zfs list | grep pool'
+         zfs list | grep pool
+
+if ( $status == 0 ) then
+  echo
+  echo '.. zpool already exists'
+  echo
+else
+  echo
+  echo ">> zpool create $JZ_ZFS_ZPOOL ""$JZ_ZFS_DEVICE"
+           zpool create $JZ_ZFS_ZPOOL "$JZ_ZFS_DEVICE"
+  echo
+endif
+
+echo ">> zfs list | grep 'pool/jails'"
+         zfs list | grep 'pool/jails'
+
+if ( $status == 0 ) then
+  echo
+  echo '.. jail filesystem already exists'
+  echo
+else
+  echo
+  echo ">> zfs create -omountpoint=/mnt/jails pool/jails"
+           zfs create -omountpoint=/mnt/jails pool/jails
+  echo
+endif

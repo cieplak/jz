@@ -1,0 +1,28 @@
+#!/bin/csh
+
+: jz.pf -- Configure pf firewall as NAT for jails running on localhost
+
+if ($1 == setup) then
+
+  echo
+  echo '>> touch /etc/pf.conf'
+           touch /etc/pf.conf
+  echo
+  echo ">> mv /etc/pf.conf /etc/.bak.pf.conf.$JZ_TIMESTAMP"
+           mv /etc/pf.conf /etc/.bak.pf.conf.$JZ_TIMESTAMP
+  echo
+  echo ">> jz.template.pf.conf > /etc/pf.conf"
+           jz.template.pf.conf > /etc/pf.conf
+  echo
+  echo '>> sysrc pf_enable="YES"'
+           sysrc pf_enable="YES"
+  echo
+  echo '>> service pf start || service pf reload'
+           service pf start || service pf reload
+  echo
+
+else
+
+  echo "Unknown pf subcommand: $1"
+
+endif

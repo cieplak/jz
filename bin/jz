@@ -1,0 +1,35 @@
+#!/bin/csh
+
+: jz -- Tool for quickly configuring FreeBSD systems
+
+source `which jz.conf`
+
+set command    = $1
+set subcommand = $2
+set param      = $3
+
+if ($command == jail) then
+
+  jz.jail $subcommand $param
+
+else if ($command == zfs) then
+
+  jz.zfs setup
+
+else if ($command == pf) then
+
+  jz.pf setup
+
+else
+
+    echo
+    echo 'jz - Configuration tool for FreeBSD'
+    echo
+    echo 'Available commands:'
+    echo ' $ jz pf   setup'
+    echo ' $ jz zfs  setup'
+    echo ' $ jz jail setup'
+    echo ' $ jz jail create $NAME'
+    echo
+
+endif

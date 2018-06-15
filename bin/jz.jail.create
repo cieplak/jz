@@ -1,0 +1,69 @@
+#!/bin/csh
+
+: jz.jail.create -- Create a new jail
+
+set JAILNAME = $1
+
+ls /mnt/jails/$JAILNAME
+
+if ( $status == 0 ) then
+  echo "Jail $JAILNAME already exists! Quitting"
+else
+  echo
+  echo ">>  @ idx = `cat ~/.jz/index`"
+            @ idx = `cat ~/.jz/index`
+  echo
+  echo ">>  @ idx += 1"
+            @ idx += 1
+  echo
+  echo ">> set ipv4 = '10.0.0.'$idx"
+           set ipv4 = '10.0.0.'$idx
+  echo
+  echo ">> echo $idx > ~/.jz/index"
+           echo $idx > ~/.jz/index
+  echo
+  echo ">> echo "$JAILNAME,$JAILNAME.local,$JZ_HOST_IFACE,$ipv4" >> ~/.jz/jails"
+           echo "$JAILNAME,$JAILNAME.local,$JZ_HOST_IFACE,$ipv4" >> ~/.jz/jails
+  echo
+  echo ">> cat ~/.jz/jails | sort | uniq > ~/.jz/.swp.jails"
+           cat ~/.jz/jails | sort | uniq > ~/.jz/.swp.jails
+  echo
+  echo ">> mv ~/.jz/.swp.jails ~/.jz/jails"
+           mv ~/.jz/.swp.jails ~/.jz/jails
+  echo
+  echo ">> jz.template.jail.conf > /etc/jail.conf"
+           jz.template.jail.conf > /etc/jail.conf
+  echo
+  echo ">> zfs clone pool/jails/base@0.0.1 pool/jails/$JAILNAME"
+           zfs clone pool/jails/base@0.0.1 pool/jails/$JAILNAME
+  echo
+  echo ">> service jail start $JAILNAME"
+           service jail start $JAILNAME
+  echo
+  echo ">> jexec $JAILNAME mkdir -p /home/$JAILNAME"
+           jexec $JAILNAME mkdir -p /home/$JAILNAME
+  echo
+  echo ">> jexec $JAILNAME pw useradd -n $JAILNAME -s csh -w no -d /home/$JAILNAME"
+           jexec $JAILNAME pw useradd -n $JAILNAME -s csh -w no -d /home/$JAILNAME
+  echo
+  echo ">> jexec $JAILNAME cp /.cshrc /home/$JAILNAME/.cshrc"
+           jexec $JAILNAME cp /.cshrc /home/$JAILNAME/.cshrc
+  echo
+  echo ">> eval "jexec $JAILNAME chown -R "$JAILNAME":"$JAILNAME" /home/$JAILNAME""
+           eval "jexec $JAILNAME chown -R "$JAILNAME":"$JAILNAME" /home/$JAILNAME"
+  echo
+  echo '>> service jail stop $JAILNAME'
+           service jail stop $JAILNAME
+  echo
+  echo
+  echo ".. Successfully created a new jail named $JAILNAME !!!"
+  echo
+  echo ".. Start the jail with the command:"
+  echo ".. $ service jail start $JAILNAME"
+  echo ".. $ service jail start $JAILNAME"
+  echo
+  echo ".. Log into the jail with the command:"
+  echo ".. $ jexec $JAILNAME"
+  echo
+
+endif

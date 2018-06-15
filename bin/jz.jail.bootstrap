@@ -1,0 +1,63 @@
+#!/bin/csh
+
+: jz.jail.bootstrap
+
+ls /mnt/jails/base
+
+if ( $status == 0 ) then
+
+  echo 'jail service already bootstrapped'
+
+else
+
+  echo
+  echo ">> echo 3 > ~/.jz/index"
+           echo 3 > ~/.jz/index
+  echo
+  echo ">> "
+           echo 'base,base.local,ena0,10.0.0.3' > ~/.jz/jails
+  echo
+  echo ">> jz.template.jail.conf > /etc/jail.conf"
+           jz.template.jail.conf > /etc/jail.conf
+  echo
+  echo '>> sysrc jail_enable="YES"'
+           sysrc jail_enable="YES"
+  echo
+  echo ">> zfs create pool/jails/base"
+           zfs create pool/jails/base
+  echo
+  echo ">> fetch ftp://ftp.freebsd.org/pub/FreeBSD/releases/amd64/amd64/11.1-RELEASE/base.txz -o /tmp/base.txz"
+           fetch ftp://ftp.freebsd.org/pub/FreeBSD/releases/amd64/amd64/11.1-RELEASE/base.txz -o /tmp/base.txz
+  echo
+  echo ">> tar -xvf /tmp/base.txz -C /mnt/jails/base"
+           tar -xvf /tmp/base.txz -C /mnt/jails/base
+  echo
+  echo ">> setenv UNAME_r 11.1-RELEASE"
+           setenv UNAME_r 11.1-RELEASE
+  echo
+  echo ">> setenv PAGER   cat"
+           setenv PAGER   cat
+  echo
+  echo ">> freebsd-update -b /mnt/jails/base fetch"
+           freebsd-update -b /mnt/jails/base fetch
+  echo
+  echo ">> freebsd-update -b /mnt/jails/base install"
+           freebsd-update -b /mnt/jails/base install
+  echo
+  echo ">> freebsd-update -b /mnt/jails/base IDS"
+           freebsd-update -b /mnt/jails/base IDS
+  echo
+  echo ">> cp /etc/resolv.conf /mnt/jails/base/etc/resolv.conf"
+           cp /etc/resolv.conf /mnt/jails/base/etc/resolv.conf
+  echo
+  echo ">> service jail start base"
+           service jail start base
+  echo
+  echo ">> service jail stop base"
+           service jail stop base
+  echo
+  echo ">> zfs snapshot pool/jails/base@0.0.1"
+           zfs snapshot pool/jails/base@0.0.1
+  echo
+
+endif

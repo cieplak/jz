@@ -1,0 +1,13 @@
+#!/bin/csh
+
+: jz.jail
+
+if ($1 == setup) then
+
+  jz.jail.setup
+
+else if ($1 == create) then
+
+  jz.jail.create $2
+
+endif
