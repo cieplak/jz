@@ -29,14 +29,14 @@ else
   echo ">> zfs create pool/jails/base"
            zfs create pool/jails/base
   echo
-  echo ">> fetch ftp://ftp.freebsd.org/pub/FreeBSD/releases/amd64/amd64/11.1-RELEASE/base.txz -o /tmp/base.txz"
-           fetch ftp://ftp.freebsd.org/pub/FreeBSD/releases/amd64/amd64/11.1-RELEASE/base.txz -o /tmp/base.txz
+  echo ">> fetch ftp://ftp.freebsd.org/pub/FreeBSD/releases/amd64/amd64/11.2-RELEASE/base.txz -o /tmp/base.txz"
+           fetch ftp://ftp.freebsd.org/pub/FreeBSD/releases/amd64/amd64/11.2-RELEASE/base.txz -o /tmp/base.txz
   echo
   echo ">> tar -xvf /tmp/base.txz -C /mnt/jails/base"
            tar -xvf /tmp/base.txz -C /mnt/jails/base
   echo
-  echo ">> setenv UNAME_r 11.1-RELEASE"
-           setenv UNAME_r 11.1-RELEASE
+  echo ">> setenv UNAME_r 11.2-RELEASE"
+           setenv UNAME_r 11.2-RELEASE
   echo
   echo ">> setenv PAGER   cat"
            setenv PAGER   cat
@@ -56,11 +56,14 @@ else
   echo ">> service jail start base"
            service jail start base
   echo
+  echo ">> jexec base sh -c 'export ASSUME_ALWAYS_YES=yes && pkg update'"
+           jexec base sh -c 'export ASSUME_ALWAYS_YES=yes && pkg update'
+  echo
   echo ">> service jail stop base"
            service jail stop base
-  echo
-  echo ">> zfs snapshot pool/jails/base@0.0.1"
-           zfs snapshot pool/jails/base@0.0.1
+  # echo
+  # echo ">> zfs snapshot pool/jails/base@0.0.1"
+  #          zfs snapshot pool/jails/base@0.0.1
   echo
 
 endif
