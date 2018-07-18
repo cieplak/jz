@@ -3,8 +3,8 @@
 : jz.zfs
 
 echo
-echo '>> zfs list | grep pool'
-         zfs list | grep pool
+echo ">> zfs list | grep $JZ_ZFS_ZPOOL"
+         zfs list | grep $JZ_ZFS_ZPOOL
 
 if ( $status == 0 ) then
   echo
@@ -17,8 +17,8 @@ else
   echo
 endif
 
-echo ">> zfs list | grep 'pool/jails'"
-         zfs list | grep 'pool/jails'
+echo ">> zfs list | grep $JZ_JAIL_ZPATH"
+         zfs list | grep $JZ_JAIL_ZPATH
 
 if ( $status == 0 ) then
   echo
@@ -26,7 +26,7 @@ if ( $status == 0 ) then
   echo
 else
   echo
-  echo ">> zfs create -omountpoint=/mnt/jails pool/jails"
-           zfs create -omountpoint=/mnt/jails pool/jails
+  echo ">> zfs create -omountpoint=$JZ_JAIL_PATH $JZ_JAIL_ZPATH"
+           zfs create -omountpoint=$JZ_JAIL_PATH $JZ_JAIL_ZPATH
   echo
 endif

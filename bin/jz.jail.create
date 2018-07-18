@@ -4,7 +4,7 @@
 
 set JAILNAME = $1
 
-ls /mnt/jails/$JAILNAME
+ls $JZ_JAIL_PATH/$JAILNAME
 
 if ( $status == 0 ) then
   echo "Jail $JAILNAME already exists! Quitting"
@@ -16,8 +16,8 @@ else
   echo ">>  @ idx += 1"
             @ idx += 1
   echo
-  echo ">> set ipv4 = '10.0.0.'$idx"
-           set ipv4 = '10.0.0.'$idx
+  echo ">> set ipv4 = ""$JZ_SUBNET""$idx"
+           set ipv4 = "$JZ_SUBNET""$idx"
   echo
   echo ">> echo $idx > ~/.jz/index"
            echo $idx > ~/.jz/index
@@ -34,23 +34,23 @@ else
   echo ">> jz.template.jail.conf > /etc/jail.conf"
            jz.template.jail.conf > /etc/jail.conf
   echo
-  echo ">> zfs clone pool/jails/base@0.0.1 pool/jails/$JAILNAME"
-           zfs clone pool/jails/base@0.0.1 pool/jails/$JAILNAME
+  echo ">> zfs clone $JZ_JAIL_ZPATH/$JZ_BASE_SNAPSHOT $JZ_JAIL_ZPATH/$JAILNAME"
+           zfs clone $JZ_JAIL_ZPATH/$JZ_BASE_SNAPSHOT $JZ_JAIL_ZPATH/$JAILNAME
   echo
   echo ">> service jail start $JAILNAME"
            service jail start $JAILNAME
   echo
-  echo ">> jexec $JAILNAME mkdir -p /home/$JAILNAME"
-           jexec $JAILNAME mkdir -p /home/$JAILNAME
+  echo ">> jexec $JAILNAME mkdir -p /home/user"
+           jexec $JAILNAME mkdir -p /home/user
   echo
-  echo ">> jexec $JAILNAME pw useradd -n $JAILNAME -s csh -w no -d /home/$JAILNAME"
-           jexec $JAILNAME pw useradd -n $JAILNAME -s csh -w no -d /home/$JAILNAME
+  echo ">> jexec $JAILNAME pw useradd -n user -s csh -w no -d /home/user"
+           jexec $JAILNAME pw useradd -n user -s csh -w no -d /home/user
   echo
-  echo ">> jexec $JAILNAME cp /.cshrc /home/$JAILNAME/.cshrc"
-           jexec $JAILNAME cp /.cshrc /home/$JAILNAME/.cshrc
+  echo ">> jexec $JAILNAME cp /.cshrc /home/user/.cshrc"
+           jexec $JAILNAME cp /.cshrc /home/user/.cshrc
   echo
-  echo ">> eval "jexec $JAILNAME chown -R "$JAILNAME":"$JAILNAME" /home/$JAILNAME""
-           eval "jexec $JAILNAME chown -R "$JAILNAME":"$JAILNAME" /home/$JAILNAME"
+  echo ">> jexec $JAILNAME chown -R user:user /home/user"
+           jexec $JAILNAME chown -R user:user /home/user
   echo
   echo '>> service jail stop $JAILNAME'
            service jail stop $JAILNAME
