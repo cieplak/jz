@@ -20,7 +20,7 @@ else
            echo $INITIAL_IP_OCTET > ~/.jz/index
   echo
   echo ">> "
-           echo "base,base.local,ena0,""$JZ_SUBNET""""$INITIAL_IP_OCTET" > ~/.jz/jails
+           echo "base,base.local,$JZ_HOST_IFACE,""$JZ_SUBNET""""$INITIAL_IP_OCTET" > ~/.jz/jails
   echo
   echo ">> jz.template.jail.conf > /etc/jail.conf"
            jz.template.jail.conf > /etc/jail.conf
